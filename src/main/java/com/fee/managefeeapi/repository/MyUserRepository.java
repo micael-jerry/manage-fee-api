@@ -13,5 +13,7 @@ public interface MyUserRepository extends JpaRepository<MyUser, Integer> {
 
     List<MyUser> findByLastnameContainsIgnoreCaseOrderById(String lastname);
 
+    List<MyUser> findByRoleAndLastnameContainingIgnoreCaseOrderById(String role, String lastname);
+
     List<MyUser> findAllByRole(String role);
 }

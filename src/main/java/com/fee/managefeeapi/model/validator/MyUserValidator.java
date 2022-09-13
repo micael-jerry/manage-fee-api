@@ -15,8 +15,11 @@ public class MyUserValidator {
     private Work work;
 
     public void accept(MyUser myUser) {
-        if (!myUser.getRole().equals("student") || !myUser.getRole().equals("teacher") || !myUser.getRole().equals("manager")) {
-            throw new InputMismatchException("role:" + myUser.getRole() + "in id:" + myUser.getId() + " does not exist");
+        if (!myUser.getRole().equals("student") && !myUser.getRole().equals("teacher") && !myUser.getRole().equals("manager")) {
+            throw new InputMismatchException("role: " + myUser.getRole() + " in id:" + myUser.getId() + " does not exist. (student,teacher,manager)");
+        }
+        if(!myUser.getSex().equals("M") && !myUser.getSex().equals("F")) {
+            throw new InputMismatchException("sex: " + myUser.getSex() + " in id:"+ myUser.getId() + " does not exist. (M,F)");
         }
         try {
             if (work.convertStringToDate(myUser.getBirthDate()).after(new Date())) {

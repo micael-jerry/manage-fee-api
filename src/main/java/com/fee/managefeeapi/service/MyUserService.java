@@ -80,6 +80,7 @@ public class MyUserService {
         if (myUser.getGroups() != null) {
             oldMyUser.setGroups(myUser.getGroups());
         }
+        myUserValidator.accept(myUser);
         return this.changeRef(myUserRepository.save(oldMyUser));
     }
 
@@ -87,9 +88,14 @@ public class MyUserService {
         myUserRepository.deleteById(id);
     }
 
-    public ResponseEntity<List<MyUser>> getUsersByRole(String role) {
+    public ResponseEntity<List<MyUser>> getUsersByRole(String role, String lastname) {
         role = role.toLowerCase();
         if (role.equals("student") || role.equals("teacher") || role.equals("manager")) {
+            if (lastname != null) {
+                return ResponseEntity
+                        .ok()
+                        .body(this.changeRefList(myUserRepository.findByRoleAndLastnameContainingIgnoreCaseOrderById(role, lastname)));
+            }
             return ResponseEntity
                     .ok()
                     .body(this.changeRefList(myUserRepository.findAllByRole(role)));
