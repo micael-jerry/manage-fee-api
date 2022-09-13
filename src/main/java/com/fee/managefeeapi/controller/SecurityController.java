@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 public class SecurityController {
-    @GetMapping("/")
-    public String helloWorld() {
-        return "hello world";
-    }
 
-    @GetMapping(value = "/auth")
+    @GetMapping(value = "/whoami")
     public Authentication authentication(@HeadersSecurityMarker Authentication authentication) {
         return authentication;
     }
