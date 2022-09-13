@@ -41,7 +41,7 @@ public class MyUserController {
     @GetMapping(value = "/role/{role}")
     public ResponseEntity<List<MyUser>> getUsersByRole(
             @PathVariable String role,
-            @RequestParam(name = "lastname") String lastname
+            @RequestParam(name = "lastname", required = false) String lastname
     ) {
         return myUserService.getUsersByRole(role, lastname);
     }
