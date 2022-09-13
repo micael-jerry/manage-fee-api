@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MyUserRepository extends JpaRepository<MyUser,Integer> {
+public interface MyUserRepository extends JpaRepository<MyUser, Integer> {
 
     MyUser findByUsername(String username);
+
+    List<MyUser> findByLastnameContainsIgnoreCase(String lastname);
 
     List<MyUser> findAllByRole(String role);
 }

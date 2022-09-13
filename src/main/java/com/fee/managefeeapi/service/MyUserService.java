@@ -3,7 +3,6 @@ package com.fee.managefeeapi.service;
 import com.fee.managefeeapi.model.MyUser;
 import com.fee.managefeeapi.model.validator.MyUserValidator;
 import com.fee.managefeeapi.repository.MyUserRepository;
-import com.fee.managefeeapi.work.Work;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,9 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -23,33 +20,16 @@ import java.util.List;
 @AllArgsConstructor
 public class MyUserService {
     private MyUserRepository myUserRepository;
-    private Work work;
     private MyUserValidator myUserValidator;
 
     @Transactional
     public ResponseEntity<List<MyUser>> saveAll(List<MyUser> myUserList) {
         List<MyUser> accepted = new ArrayList<>();
         for (MyUser myUser : myUserList) {
-            if (myUserValidator.acceptRole(myUser)) {
-                accepted.add(myUser);
-            } else {
-                return ResponseEntity
-                        .badRequest()
-                        .header("ERROR", "role:" + myUser.getRole() + "in id:" + myUser.getId() + " does not exist")
-                        .body(null);
-            }
+            myUserValidator.accept(myUser);
+            accepted.add(myUser);
             if (myUser.getPassword() != null) {
                 myUser.setPassword(passwordEncoder().encode(myUser.getPassword()));
-            }
-            try {
-                if (work.convertStringToDate(myUser.getBirthDate()).after(new Date())) {
-                    return ResponseEntity
-                            .badRequest()
-                            .header("ERROR", "birthDate < new date in myUser id: " + myUser.getId())
-                            .body(null);
-                }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
             }
         }
         return ResponseEntity
@@ -61,7 +41,10 @@ public class MyUserService {
         return new BCryptPasswordEncoder();
     }
 
-    public List<MyUser> getAll(Integer page, Integer size) {
+    public List<MyUser> getAll(Integer page, Integer size, String lastname) {
+        if (lastname != null) {
+            return this.filterByLastName(lastname);
+        }
         if (page != null && size != null) {
             return this.changeRefList(
                     myUserRepository.findAll(
@@ -74,6 +57,10 @@ public class MyUserService {
 
     public MyUser getUserById(int id) {
         return this.changeRef(myUserRepository.findById(id).get());
+    }
+
+    public List<MyUser> filterByLastName(String lastname) {
+        return myUserRepository.findByLastnameContainsIgnoreCase(lastname);
     }
 
     public MyUser updateUserById(int id, MyUser myUser) {

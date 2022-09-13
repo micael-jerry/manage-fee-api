@@ -32,9 +32,10 @@ public class MyUserController {
     @GetMapping(value = "")
     public List<MyUser> getUsers(
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "lastname", required = false) String lastname
     ) {
-        return myUserService.getAll(page, size);
+        return myUserService.getAll(page, size, lastname);
     }
 
     @GetMapping(value = "/role/{role}")
