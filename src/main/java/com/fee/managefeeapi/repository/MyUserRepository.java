@@ -11,7 +11,7 @@ public interface MyUserRepository extends JpaRepository<MyUser, Integer> {
 
     MyUser findByUsername(String username);
 
-    List<MyUser> findByLastnameContainsIgnoreCase(String lastname);
+    List<MyUser> findByLastnameContainsIgnoreCaseOrderById(String lastname);
 
     List<MyUser> findAllByRole(String role);
 }

@@ -43,7 +43,7 @@ public class MyUserService {
 
     public List<MyUser> getAll(Integer page, Integer size, String lastname) {
         if (lastname != null) {
-            return this.filterByLastName(lastname);
+            return this.changeRefList(this.filterByLastName(lastname));
         }
         if (page != null && size != null) {
             return this.changeRefList(
@@ -60,7 +60,7 @@ public class MyUserService {
     }
 
     public List<MyUser> filterByLastName(String lastname) {
-        return myUserRepository.findByLastnameContainsIgnoreCase(lastname);
+        return myUserRepository.findByLastnameContainsIgnoreCaseOrderById(lastname);
     }
 
     public MyUser updateUserById(int id, MyUser myUser) {
