@@ -2,6 +2,7 @@ package com.fee.managefeeapi.repository;
 
 
 import com.fee.managefeeapi.model.Fee;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,7 +14,13 @@ public interface FeeRepository extends JpaRepository<Fee, Integer> {
 
     List<Fee> findAllByStudentLastname(String lastname);
 
+    List<Fee> findAllByStudentLastname(String lastname, Pageable pageable);
+
     List<Fee> findAllByType(String type);
+
+    List<Fee> findAllByType(String type, Pageable pageable);
+
+    List<Fee> findAllBySchoolYearStartYear(String schoolYear_startYear);
 
     List<Fee> findAllByTypeAndSchoolYearStartYear(String type, String schoolYear_startYear);
 }

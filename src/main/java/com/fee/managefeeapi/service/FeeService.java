@@ -19,13 +19,33 @@ public class FeeService {
     private TransactionService transactionService;
     private FeeValidator feeValidator;
 
-    public List<Fee> getAll(Integer page, Integer size) {
+    public List<Fee> getAll(Integer page, Integer size, String type, String lastname) {
+        if (type != null) {
+            return this.findByType(page, size, type);
+        }
+        if (lastname != null) {
+            return this.findByStudentLastName(page, size, lastname);
+        }
         if (page != null && size != null) {
             return this.changeRemainingAmountList(
                     feeRepository.findAll(PageRequest.of(page, size)).toList()
             );
         }
         return this.changeRemainingAmountList(feeRepository.findAll());
+    }
+
+    public List<Fee> findByType(Integer page, Integer size, String type) {
+        if (page != null && size != null) {
+            return this.changeRemainingAmountList(feeRepository.findAllByType(type, PageRequest.of(page, size)));
+        }
+        return this.changeRemainingAmountList(feeRepository.findAllByType(type));
+    }
+
+    public List<Fee> findByStudentLastName(Integer page, Integer size, String lastname) {
+        if (page != null && size != null) {
+            return this.changeRemainingAmountList(feeRepository.findAllByStudentLastname(lastname, PageRequest.of(page, size)));
+        }
+        return this.changeRemainingAmountList(feeRepository.findAllByStudentLastname(lastname));
     }
 
     @Transactional
@@ -52,7 +72,7 @@ public class FeeService {
 
     public Fee putById(int id, Fee fee) {
         Fee oldFee = feeRepository.findById(id).get();
-        if(fee.getType() != null) {
+        if (fee.getType() != null) {
             feeValidator.acceptTypeFee(fee);
             oldFee.setType(fee.getType());
         }
