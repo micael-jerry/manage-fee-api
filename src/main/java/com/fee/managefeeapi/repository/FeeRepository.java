@@ -22,5 +22,8 @@ public interface FeeRepository extends JpaRepository<Fee, Integer> {
 
     List<Fee> findAllBySchoolYearStartYear(String schoolYear_startYear);
 
+    List<Fee> findAllByStudent_Id(Integer student_id);
+    List<Fee> findAllByStudent_Id(Integer student_id,Pageable pageable);
+
     List<Fee> findAllByTypeAndSchoolYearStartYear(String type, String schoolYear_startYear);
 }

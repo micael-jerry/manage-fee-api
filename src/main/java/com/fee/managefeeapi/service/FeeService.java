@@ -19,7 +19,10 @@ public class FeeService {
     private TransactionService transactionService;
     private FeeValidator feeValidator;
 
-    public List<Fee> getAll(Integer page, Integer size, String type, String lastname) {
+    public List<Fee> getAll(Integer page, Integer size, String type, String lastname, Integer studentId) {
+        if(studentId != null) {
+            return this.findByStudentId(page,size,studentId);
+        }
         if (type != null) {
             return this.findByType(page, size, type);
         }
@@ -39,6 +42,13 @@ public class FeeService {
             return this.changeRemainingAmountList(feeRepository.findAllByType(type, PageRequest.of(page, size)));
         }
         return this.changeRemainingAmountList(feeRepository.findAllByType(type));
+    }
+
+    public List<Fee> findByStudentId(Integer page, Integer size, Integer id) {
+        if (page != null && size != null) {
+            return this.changeRemainingAmountList(feeRepository.findAllByStudent_Id(id, PageRequest.of(page, size)));
+        }
+        return this.changeRemainingAmountList(feeRepository.findAllByStudent_Id(id));
     }
 
     public List<Fee> findByStudentLastName(Integer page, Integer size, String lastname) {
