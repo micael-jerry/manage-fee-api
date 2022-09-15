@@ -50,6 +50,7 @@ public class MyUser implements Serializable {
     @JoinColumn(name = "group_id")
     private Groups groups;
 
+    @Column(unique = true)
     private String username;
     private String password;
     @Column(nullable = false)
