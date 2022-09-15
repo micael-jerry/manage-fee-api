@@ -3,6 +3,7 @@ package com.fee.managefeeapi.controller;
 import com.fee.managefeeapi.model.Groups;
 import com.fee.managefeeapi.service.GroupsService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/group")
 public class GroupsController {
     private GroupsService groupService;

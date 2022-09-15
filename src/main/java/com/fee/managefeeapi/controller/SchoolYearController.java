@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/school-year")
 public class SchoolYearController {
     private SchoolYearService schoolYearService;
